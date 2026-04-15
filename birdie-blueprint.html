@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Birdie Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#05080a;
+  --surface:#0c1014;
+  --surface2:#111820;
+  --surface3:#1a2430;
+  --border:#1e2d3d;
+  --border2:#243446;
+  --gold:#c8973f;
+  --gold2:#e8b84b;
+  --gold3:#f7d070;
+  --green:#2a7a4a;
+  --green2:#35a060;
+  --green3:#45c878;
+  --text:#e8f0f8;
+  --text2:#8da8c0;
+  --text3:#4a6880;
+  --red:#d04545;
+  --blue:#3a7ab8;
+  --radius:14px;
+  --tab-h:68px;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+  padding-bottom:var(--tab-h);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── AUTH SCREEN ── */
+#auth-screen{
+  position:fixed;inset:0;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:1000;
+  gap:0;
+}
+.auth-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,151,63,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(42,122,74,0.08) 0%, transparent 60%);
+}
+.auth-logo-wrap{
+  position:relative;
+  text-align:center;
+  margin-bottom:48px;
+}
+.auth-logo-icon{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold3) 100%);
+  border-radius:22px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:38px;
+  margin:0 auto 20px;
+  box-shadow:0 0 60px rgba(200,151,63,0.3);
+}
+.auth-logo-text{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:900;
+  letter-spacing:-0.5px;
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.auth-tagline{
+  color:var(--text2);font-size:14px;
+  margin-top:6px;letter-spacing:1px;
+  text-transform:uppercase;font-weight:500;
+}
+.auth-card{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:32px 28px;
+  width:min(360px,90vw);
+}
+.auth-card h2{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;
+  margin-bottom:6px;
+}
+.auth-card p{
+  color:var(--text2);font-size:13px;
+  margin-bottom:28px;line-height:1.5;
+}
+.auth-btn{
+  width:100%;
+  padding:14px 20px;
+  border-radius:12px;
+  border:1px solid var(--border2);
+  background:var(--surface2);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:600;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:all .2s;
+  margin-bottom:12px;
+}
+.auth-btn:hover{background:var(--surface3);border-color:var(--gold);transform:translateY(-1px)}
+.auth-btn:last-child{margin-bottom:0}
+.auth-btn-icon{width:22px;height:22px;flex-shrink:0}
+.auth-divider{
+  text-align:center;color:var(--text3);
+  font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;
+  margin:16px 0;
+  display:flex;align-items:center;gap:12px;
+}
+.auth-divider::before,.auth-divider::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.auth-guest{
+  background:none;border:none;
+  color:var(--text3);font-size:13px;
+  cursor:pointer;text-decoration:underline;
+  text-align:center;width:100%;
+  margin-top:16px;padding:8px;
+  font-family:'DM Sans',sans-serif;
+  transition:color .2s;
+}
+.auth-guest:hover{color:var(--text2)}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(5,8,10,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 20px;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-logo{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:900;
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.header-user{
+  display:flex;align-items:center;gap:10px;
+}
+.user-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--green2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--bg);
+  border:2px solid var(--gold);
+  overflow:hidden;
+}
+.user-avatar img{width:100%;height:100%;object-fit:cover}
+.streak-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:4px 10px;
+  font-size:12px;font-weight:600;
+  color:var(--gold2);
+}
+
+/* ── BOTTOM TABS ── */
+.tab-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--tab-h);
+  background:rgba(5,8,10,0.96);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:100;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tab-item{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;cursor:pointer;
+  border:none;background:none;
+  color:var(--text3);
+  transition:all .2s;
+  padding:8px 4px;
+  position:relative;
+}
+.tab-item.active{color:var(--gold2)}
+.tab-item.active::before{
+  content:'';
+  position:absolute;top:0;left:20%;right:20%;
+  height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold3));
+  border-radius:0 0 2px 2px;
+}
+.tab-icon{font-size:22px;line-height:1;transition:transform .2s}
+.tab-item.active .tab-icon{transform:scale(1.1)}
+.tab-label{font-size:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+
+/* ── VIEWS ── */
+.view{display:none;min-height:calc(100vh - 56px - var(--tab-h));padding-bottom:20px}
+.view.active{display:block}
+
+/* ── SHARED COMPONENTS ── */
+.page-pad{padding:20px 18px 0}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;
+  margin-bottom:4px;
+}
+.section-sub{color:var(--text2);font-size:13px;margin-bottom:20px}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:14px;
+}
+.card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+.pill{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:600;letter-spacing:.5px;
+}
+.pill-gold{background:rgba(200,151,63,0.15);color:var(--gold2);border:1px solid rgba(200,151,63,0.3)}
+.pill-green{background:rgba(42,122,74,0.15);color:var(--green3);border:1px solid rgba(42,122,74,0.3)}
+.pill-blue{background:rgba(58,122,184,0.15);color:#6ab0e8;border:1px solid rgba(58,122,184,0.3)}
+.btn{
+  padding:12px 22px;border-radius:10px;
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;
+  cursor:pointer;border:none;
+  transition:all .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,151,63,0.4)}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}
+.btn-sm{padding:8px 14px;font-size:12px;border-radius:8px}
+
+/* ── HOME TAB ── */
+.home-hero{
+  background:linear-gradient(160deg,var(--surface2) 0%,var(--surface) 100%);
+  border-bottom:1px solid var(--border);
+  padding:24px 18px 20px;
+  position:relative;
+  overflow:hidden;
+}
+.home-hero::before{
+  content:'';position:absolute;
+  top:-40px;right:-40px;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(200,151,63,0.12) 0%,transparent 70%);
+  border-radius:50%;
+}
+.home-greeting{color:var(--text2);font-size:13px;font-weight:500;letter-spacing:.5px;margin-bottom:4px}
+.home-name{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:900;
+  line-height:1.1;margin-bottom:16px;
+}
+.home-stats{display:flex;gap:12px;margin-bottom:20px}
+.home-stat{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;flex:1;
+  text-align:center;
+}
+.home-stat-val{font-size:22px;font-weight:700;color:var(--gold2);line-height:1}
+.home-stat-label{font-size:10px;color:var(--text3);margin-top:3px;letter-spacing:.5px;text-transform:uppercase}
+.xp-bar-wrap{margin-top:4px}
+.xp-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:5px}
+.xp-bar{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold3));border-radius:3px;transition:width .6s ease}
+
+.today-focus{
+  background:linear-gradient(135deg,rgba(42,122,74,0.15),rgba(42,122,74,0.05));
+  border:1px solid rgba(42,122,74,0.3);
+  border-radius:var(--radius);
+  padding:16px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.today-focus:hover{border-color:var(--green2);transform:translateY(-1px)}
+.today-focus-left{flex:1}
+.today-focus-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green3);margin-bottom:4px}
+.today-focus-title{font-size:16px;font-weight:600}
+.today-focus-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.today-focus-arrow{font-size:20px;color:var(--green3);flex-shrink:0}
+
+.activity-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.activity-item:last-child{border-bottom:none}
+.activity-icon{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.activity-icon.green{background:rgba(42,122,74,0.15)}
+.activity-icon.gold{background:rgba(200,151,63,0.15)}
+.activity-text{flex:1}
+.activity-title{font-size:13px;font-weight:600}
+.activity-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.activity-time{font-size:11px;color:var(--text3)}
+
+/* ── PRACTICE TAB ── */
+.plan-header{
+  background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border-bottom:1px solid var(--border);
+  padding:20px 18px;
+}
+.plan-week{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.week-days{display:flex;gap:6px}
+.week-day{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--surface3);border:1px solid var(--border);
+  font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);
+  gap:2px;
+}
+.week-day.done{background:rgba(42,122,74,0.2);border-color:var(--green);color:var(--green3)}
+.week-day.today{background:rgba(200,151,63,0.15);border-color:var(--gold);color:var(--gold2)}
+.week-day-num{font-size:12px;font-weight:700}
+
+.drill-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:10px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.drill-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.drill-card.completed{opacity:0.6;border-color:var(--green)}
+.drill-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.drill-name{font-size:15px;font-weight:600}
+.drill-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.drill-check{
+  width:24px;height:24px;border-radius:50%;
+  border:2px solid var(--border2);
+  flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-size:12px;
+}
+.drill-card.completed .drill-check{background:var(--green);border-color:var(--green);color:#fff}
+.drill-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-top:8px;display:none}
+.drill-card.expanded .drill-desc{display:block}
+.drill-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.drill-xp{font-size:12px;font-weight:600;color:var(--gold2)}
+
+.session-bar{
+  position:sticky;top:56px;z-index:40;
+  background:rgba(5,8,10,0.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:12px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.session-progress{flex:1}
+.session-prog-label{font-size:11px;color:var(--text3);margin-bottom:4px;display:flex;justify-content:space-between}
+.session-prog-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.session-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green3));border-radius:2px;transition:width .4s}
+
+/* ── MY BAG TAB ── */
+.bag-tabs{
+  display:flex;
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+.bag-tab{
+  flex:1;padding:14px;text-align:center;
+  font-size:12px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;color:var(--text3);
+  cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;
+  transition:all .2s;
+}
+.bag-tab.active{color:var(--gold2);border-bottom-color:var(--gold2)}
+
+/* Club builder */
+.club-category{margin-bottom:20px}
+.club-cat-title{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;padding:0 18px;
+}
+.club-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 18px;
+  border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.club-item:hover{background:var(--surface2)}
+.club-toggle{
+  width:44px;height:24px;border-radius:12px;
+  background:var(--surface3);border:1px solid var(--border2);
+  position:relative;cursor:pointer;flex-shrink:0;transition:all .2s;
+}
+.club-toggle.on{background:var(--gold);border-color:var(--gold)}
+.club-toggle::after{
+  content:'';position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  background:#fff;top:2px;left:2px;
+  transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,0.3);
+}
+.club-toggle.on::after{transform:translateX(20px)}
+.club-name{flex:1;font-size:14px;font-weight:500}
+.club-custom-name{
+  background:transparent;border:none;border-bottom:1px solid var(--border2);
+  color:var(--text2);font-size:12px;font-family:'DM Sans',sans-serif;
+  width:70px;text-align:right;padding:2px 4px;
+  outline:none;transition:border-color .2s;
+}
+.club-custom-name:focus{border-bottom-color:var(--gold)}
+
+/* Yardage grid */
+.yardage-section{margin-bottom:24px}
+.yardage-section-title{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text3);
+  padding:14px 18px 8px;
+  display:flex;align-items:center;gap:8px;
+}
+.yardage-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.yardage-table{width:100%;border-collapse:collapse}
+.yardage-table th{
+  font-size:10px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;color:var(--text3);
+  padding:8px 12px;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.yardage-table th:first-child{text-align:left}
+.yardage-table td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.yardage-table tr:last-child td{border-bottom:none}
+.yardage-table td:first-child{font-size:13px;font-weight:600;text-align:left}
+.yardage-input{
+  width:52px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--text);
+  font-size:13px;font-family:'DM Mono',monospace;
+  padding:5px;text-align:center;
+  transition:all .2s;outline:none;
+}
+.yardage-input:focus{border-color:var(--gold);background:var(--surface3)}
+.yardage-input::placeholder{color:var(--text3)}
+.yardage-input.full-only{width:60px}
+.section-divider{
+  margin:0 18px 8px;
+  height:1px;background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:0.3;
+}
+
+/* ── SHOT MAPS TAB ── */
+.shot-maps-inner{padding:16px 18px 0}
+.course-search-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  margin-bottom:16px;
+  cursor:pointer;
+  transition:border-color .2s;
+}
+.course-search-bar:hover{border-color:var(--border2)}
+.course-search-bar input{
+  flex:1;background:none;border:none;
+  color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;
+  outline:none;
+}
+.course-search-bar input::placeholder{color:var(--text3)}
+.course-icon{font-size:16px;color:var(--text3)}
+.course-selected{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(42,122,74,0.1);
+  border:1px solid rgba(42,122,74,0.3);
+  border-radius:10px;
+  padding:10px 14px;
+  margin-bottom:16px;
+}
+.course-selected-name{font-size:13px;font-weight:600;color:var(--green3)}
+.course-clear{font-size:12px;color:var(--text3);cursor:pointer;padding:2px 6px;border-radius:4px;border:1px solid var(--border);background:none}
+
+/* Adjustments panel */
+.adjustments-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.adj-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:12px;
+}
+.adj-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.adj-toggle-row{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.adj-toggle{
+  flex:1;padding:6px 4px;border-radius:6px;
+  border:1px solid var(--border);background:var(--surface2);
+  color:var(--text3);font-size:11px;font-weight:600;
+  cursor:pointer;text-align:center;transition:all .15s;min-width:44px;
+}
+.adj-toggle.active{background:rgba(200,151,63,0.15);border-color:var(--gold);color:var(--gold2)}
+.adj-input-row{display:flex;align-items:center;gap:6px}
+.adj-input{
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:6px;color:var(--text);font-size:13px;
+  font-family:'DM Mono',monospace;padding:6px 8px;outline:none;
+  transition:border-color .2s;
+}
+.adj-input:focus{border-color:var(--gold)}
+.adj-unit{font-size:11px;color:var(--text3)}
+
+/* Slider */
+.slider-section{margin-bottom:16px}
+.slider-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.slider-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
+.laser-input-wrap{display:flex;align-items:center;gap:6px}
+.laser-input{
+  width:65px;background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;color:var(--text);font-size:13px;
+  font-family:'DM Mono',monospace;padding:5px 8px;outline:none;
+  text-align:center;transition:border-color .2s;
+}
+.laser-input:focus{border-color:var(--gold)}
+.laser-label{font-size:11px;color:var(--text3)}
+
+.distance-display{
+  text-align:center;margin-bottom:12px;
+}
+.distance-raw{
+  font-family:'Playfair Display',serif;
+  font-size:52px;font-weight:900;
+  line-height:1;
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.distance-unit{font-size:14px;color:var(--text3);margin-top:2px}
+.plays-like{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(200,151,63,0.1);
+  border:1px solid rgba(200,151,63,0.2);
+  border-radius:20px;padding:4px 14px;
+  font-size:12px;color:var(--gold2);font-weight:600;
+  margin-top:6px;
+}
+
+input[type=range]{
+  -webkit-appearance:none;
+  width:100%;height:6px;
+  background:var(--surface3);
+  border-radius:3px;outline:none;
+  cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  box-shadow:0 2px 8px rgba(200,151,63,0.5);
+  border:2px solid var(--gold3);
+  cursor:pointer;transition:transform .15s;
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.slider-marks{display:flex;justify-content:space-between;margin-top:6px;padding:0 2px}
+.slider-mark{font-size:10px;color:var(--text3)}
+
+/* Fairway visual */
+.fairway-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  margin-bottom:16px;
+  position:relative;
+}
+.fairway-svg{width:100%;display:block}
+
+/* View toggle */
+.view-toggle{
+  display:flex;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:3px;
+  margin-bottom:12px;
+  gap:2px;
+}
+.view-toggle-btn{
+  flex:1;padding:7px 10px;border-radius:7px;
+  border:none;background:none;
+  color:var(--text3);font-size:12px;font-weight:600;
+  letter-spacing:.4px;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.view-toggle-btn.active{
+  background:var(--surface3);
+  color:var(--gold2);
+  border:1px solid var(--border2);
+  box-shadow:0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* Options list */
+.options-title{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:10px;
+}
+.option-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+  transition:all .2s;
+}
+.option-card:hover{border-color:var(--border2);transform:translateX(2px)}
+.option-rank{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;
+}
+.option-rank.r1{background:rgba(200,151,63,0.2);color:var(--gold2);border:1px solid var(--gold)}
+.option-rank.r2{background:rgba(58,122,184,0.2);color:#6ab0e8;border:1px solid var(--blue)}
+.option-rank.r3{background:rgba(42,122,74,0.2);color:var(--green3);border:1px solid var(--green)}
+.option-info{flex:1}
+.option-clubs{font-size:14px;font-weight:600}
+.option-detail{font-size:11px;color:var(--text2);margin-top:2px}
+.option-dist{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--gold2);text-align:right}
+
+/* Caddie card (zone view) */
+.caddie-header{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.caddie-card{
+  border-radius:10px;padding:13px 15px;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:14px;
+  border:1px solid transparent;
+  transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.caddie-card::before{
+  content:'';position:absolute;inset:0;
+  opacity:0.07;border-radius:10px;
+}
+.caddie-card.best::before{background:var(--gold2)}
+.caddie-card.good::before{background:#6ab0e8}
+.caddie-card.ok::before{background:var(--green3)}
+.caddie-card.best{border-color:rgba(232,184,75,0.35);background:rgba(232,184,75,0.05)}
+.caddie-card.good{border-color:rgba(106,176,232,0.3);background:rgba(58,122,184,0.05)}
+.caddie-card.ok{border-color:rgba(69,200,120,0.25);background:rgba(42,122,74,0.05)}
+.caddie-swatch{width:10px;border-radius:3px;flex-shrink:0;align-self:stretch;min-height:36px}
+.caddie-swatch.best{background:linear-gradient(180deg,var(--gold3),var(--gold))}
+.caddie-swatch.good{background:linear-gradient(180deg,#8ac8f0,#3a7ab8)}
+.caddie-swatch.ok{background:linear-gradient(180deg,var(--green3),var(--green))}
+.caddie-info{flex:1}
+.caddie-club{font-size:15px;font-weight:700}
+.caddie-swing{font-size:12px;margin-top:2px}
+.caddie-swing.best{color:var(--gold2)}
+.caddie-swing.good{color:#6ab0e8}
+.caddie-swing.ok{color:var(--green3)}
+.caddie-dist{text-align:right;flex-shrink:0}
+.caddie-dist-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;line-height:1}
+.caddie-dist-delta{font-size:11px;color:var(--text3);margin-top:2px}
+.caddie-dist-delta.exact{color:var(--green3)}
+
+/* Course search modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
+  z-index:200;display:none;align-items:flex-end;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex}
+.modal-sheet{
+  background:var(--surface);
+  border-radius:20px 20px 0 0;
+  border:1px solid var(--border);
+  border-bottom:none;
+  width:100%;
+  max-height:80vh;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{
+  width:36px;height:4px;border-radius:2px;
+  background:var(--border2);margin:12px auto 0;flex-shrink:0;
+}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px 12px;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+}
+.modal-title{font-size:16px;font-weight:700}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;padding:4px}
+.modal-search{
+  padding:12px 18px;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+}
+.modal-search input{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;color:var(--text);
+  font-size:14px;font-family:'DM Sans',sans-serif;outline:none;
+  transition:border-color .2s;
+}
+.modal-search input:focus{border-color:var(--gold)}
+.modal-results{overflow-y:auto;flex:1;padding:8px 0}
+.modal-course-item{
+  padding:14px 18px;cursor:pointer;
+  border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.modal-course-item:hover{background:var(--surface2)}
+.modal-course-item:last-child{border-bottom:none}
+.modal-course-name{font-size:14px;font-weight:600}
+.modal-course-loc{font-size:12px;color:var(--text3);margin-top:2px}
+.modal-loading{padding:40px;text-align:center;color:var(--text3)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:calc(var(--tab-h) + 12px);left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:10px;padding:10px 18px;
+  font-size:13px;font-weight:500;
+  opacity:0;transition:all .3s;pointer-events:none;z-index:500;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:380px){
+  .home-stats{gap:8px}
+  .adjustments-grid{grid-template-columns:1fr}
+}
+
+/* ── SHOT MAPS NEW PANELS ── */
+.sm-panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;margin-bottom:12px;
+}
+.sm-panel-label{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:10px;
+}
+.sm-sub-label{
+  font-size:9px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:6px;
+  display:block;
+}
+.sm-row{display:flex;flex-direction:column}
+
+/* Tee picker */
+.tee-picker{display:flex;gap:6px;flex-wrap:wrap}
+.tee-btn{
+  padding:6px 14px;border-radius:8px;border:1px solid var(--border2);
+  background:var(--surface2);font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;
+  color:var(--text2);
+}
+.tee-btn.active{border-color:currentColor;box-shadow:0 0 0 1px currentColor}
+.tee-black{color:#fff}
+.tee-blue{color:#4a9edb}
+.tee-white{color:#dde8dd}
+.tee-red{color:#d04545}
+.tee-gold{color:var(--gold2)}
+.tee-green{color:var(--green3)}
+
+/* Hole picker */
+.hole-picker{
+  display:flex;flex-wrap:wrap;gap:4px;
+}
+.hole-btn{
+  width:34px;height:28px;border-radius:6px;
+  border:1px solid var(--border);background:var(--surface2);
+  color:var(--text3);font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;justify-content:center;
+}
+.hole-btn:hover{border-color:var(--border2);color:var(--text2)}
+.hole-btn.active{
+  background:rgba(200,151,63,0.15);border-color:var(--gold);
+  color:var(--gold2);
+}
+
+/* Hole stats bar */
+.hole-stats-bar{
+  display:flex;align-items:center;justify-content:space-around;
+  background:linear-gradient(135deg,rgba(42,122,74,0.12),rgba(42,122,74,0.04));
+  border:1px solid rgba(42,122,74,0.25);
+  border-radius:12px;padding:12px 8px;margin-bottom:12px;
+}
+.hole-stat{text-align:center}
+.hole-stat-val{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:900;
+  color:var(--text);line-height:1;
+}
+.hole-stat-label{
+  font-size:9px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;color:var(--text3);margin-top:2px;
+}
+.hole-stat-div{width:1px;height:32px;background:var(--border)}
+
+/* Shape selector */
+.shape-row{display:flex;gap:5px;margin-bottom:10px}
+.shape-btn{
+  flex:1;padding:8px 4px;border-radius:8px;
+  border:1px solid var(--border);background:var(--surface2);
+  color:var(--text3);font-size:16px;
+  cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  font-family:'DM Sans',sans-serif;
+}
+.shape-btn span{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.shape-btn.active{
+  background:rgba(200,151,63,0.12);border-color:var(--gold);
+  color:var(--gold2);
+}
+.severity-row{display:flex;align-items:center;gap:4px;margin-top:4px}
+.sev-btn{
+  padding:5px 10px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text3);
+  font-size:11px;font-weight:600;cursor:pointer;
+  transition:all .15s;font-family:'DM Sans',sans-serif;
+}
+.sev-btn.active{
+  background:rgba(200,151,63,0.12);border-color:var(--gold);color:var(--gold2);
+}
+
+/* Course search bar */
+.course-search-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition:border-color .2s;
+}
+.course-search-bar:hover{border-color:var(--gold)}
+.course-icon{font-size:16px;color:var(--text3)}
+.course-selected{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(42,122,74,0.1);
+  border:1px solid rgba(42,122,74,0.3);
+  border-radius:10px;padding:10px 14px;
+}
+.course-selected-name{font-size:13px;font-weight:600;color:var(--green3)}
+.course-clear{
+  font-size:11px;color:var(--text3);cursor:pointer;
+  padding:3px 8px;border-radius:5px;
+  border:1px solid var(--border);background:none;
+  font-family:'DM Sans',sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ AUTH SCREEN ═══ -->
+<div id="auth-screen">
+  <div class="auth-bg"></div>
+  <div class="auth-logo-wrap">
+    <div class="auth-logo-icon">⛳</div>
+    <div class="auth-logo-text">Birdie Blueprint</div>
+    <div class="auth-tagline">Your Personal Golf Improvement System</div>
+  </div>
+  <div class="auth-card">
+    <h2>Welcome</h2>
+    <p>Sign in to save your bag, yardages, and practice history across all your devices.</p>
+    <button class="auth-btn" id="google-btn">
+      <svg class="auth-btn-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <button class="auth-btn" id="apple-btn">
+      <svg class="auth-btn-icon" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.17 1.28-2.15 3.81.02 3.02 2.65 4.03 2.68 4.04l-.08.27zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Continue with Apple
+    </button>
+    <div class="auth-divider">or</div>
+    <button class="auth-guest" id="guest-btn">Continue as Guest</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app" style="display:none">
+
+  <!-- Header -->
+  <header>
+    <div class="header-logo">Birdie Blueprint</div>
+    <div class="header-user">
+      <div class="streak-pill">🔥 <span id="header-streak">0</span></div>
+      <div class="user-avatar" id="user-avatar">?</div>
+    </div>
+  </header>
+
+  <!-- ══ HOME VIEW ══ -->
+  <div class="view active" id="view-home">
+    <div class="home-hero">
+      <div class="home-greeting">GOOD <span id="time-of-day">MORNING</span></div>
+      <div class="home-name" id="home-name">Golfer</div>
+      <div class="home-stats">
+        <div class="home-stat">
+          <div class="home-stat-val" id="stat-streak">0</div>
+          <div class="home-stat-label">Day Streak</div>
+        </div>
+        <div class="home-stat">
+          <div class="home-stat-val" id="stat-sessions">0</div>
+          <div class="home-stat-label">Sessions</div>
+        </div>
+        <div class="home-stat">
+          <div class="home-stat-val" id="stat-drills">0</div>
+          <div class="home-stat-label">Drills Done</div>
+        </div>
+      </div>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-label">
+          <span id="xp-label">0 / 500 XP to Level 2</span>
+          <span id="xp-pct">0%</span>
+        </div>
+        <div class="xp-bar"><div class="xp-bar-fill" id="xp-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="page-pad">
+      <div class="today-focus" onclick="switchTab('practice')">
+        <div class="today-focus-left">
+          <div class="today-focus-tag">📋 Today's Focus</div>
+          <div class="today-focus-title">Full Swing — Iron Play</div>
+          <div class="today-focus-sub">5 drills · Est. 45 min</div>
+        </div>
+        <div class="today-focus-arrow">→</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Activity</div>
+        <div id="activity-list">
+          <div class="activity-item">
+            <div class="activity-icon green">🎯</div>
+            <div class="activity-text">
+              <div class="activity-title">No sessions yet</div>
+              <div class="activity-sub">Complete your first practice session</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-gold btn-sm" onclick="switchTab('practice')">▶ Start Session</button>
+          <button class="btn btn-outline btn-sm" onclick="switchTab('mybag')">🎒 Update Yardages</button>
+          <button class="btn btn-outline btn-sm" onclick="switchTab('shotmaps')">🗺 Shot Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRACTICE VIEW ══ -->
+  <div class="view" id="view-practice">
+    <div class="plan-header">
+      <div class="section-title">Practice</div>
+      <div class="section-sub">Week 1 of your improvement plan</div>
+      <div class="plan-week">
+        <div class="week-days" id="week-days"></div>
+        <button class="btn btn-gold btn-sm" onclick="startSession()">▶ Start</button>
+      </div>
+    </div>
+
+    <div class="session-bar" id="session-bar" style="display:none">
+      <div class="session-progress">
+        <div class="session-prog-label">
+          <span>Session Progress</span>
+          <span id="session-count">0 / 5</span>
+        </div>
+        <div class="session-prog-bar">
+          <div class="session-prog-fill" id="session-prog-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <button class="btn btn-green btn-sm" onclick="finishSession()">✓ Finish</button>
+    </div>
+
+    <div class="page-pad" id="drill-list"></div>
+  </div>
+
+  <!-- ══ MY BAG VIEW ══ -->
+  <div class="view" id="view-mybag">
+    <div style="padding:20px 18px 8px">
+      <div class="section-title">My Bag</div>
+      <div class="section-sub">Build your club set and log yardages</div>
+    </div>
+
+    <div class="bag-tabs">
+      <button class="bag-tab active" onclick="showBagTab('setup')">🎒 Club Setup</button>
+      <button class="bag-tab" onclick="showBagTab('yardages')">📏 Yardage Chart</button>
+    </div>
+
+    <!-- Club Setup -->
+    <div id="bag-setup">
+      <div id="club-builder"></div>
+      <div style="padding:16px 18px">
+        <button class="btn btn-gold" style="width:100%" onclick="saveBag()">💾 Save My Bag</button>
+      </div>
+    </div>
+
+    <!-- Yardage Chart -->
+    <div id="bag-yardages" style="display:none">
+      <div id="yardage-chart"></div>
+      <div style="padding:16px 18px">
+        <button class="btn btn-gold" style="width:100%" onclick="saveYardages()">💾 Save Yardages</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SHOT MAPS VIEW ══ -->
+  <div class="view" id="view-shotmaps">
+    <div style="padding:16px 18px 8px">
+      <div class="section-title">Shot Maps</div>
+      <div class="section-sub">Find your best play for any distance</div>
+    </div>
+
+    <div class="shot-maps-inner">
+
+      <!-- ① COURSE PANEL -->
+      <div class="sm-panel" id="course-panel">
+        <div class="sm-panel-label">⛳ COURSE</div>
+        <div id="course-bar">
+          <div class="course-search-bar" onclick="openCourseModal()">
+            <span class="course-icon">🔍</span>
+            <span style="flex:1;color:var(--text3);font-size:13px">Search for a course...</span>
+            <span class="pill pill-gold" style="font-size:10px">Live</span>
+          </div>
+        </div>
+        <!-- Tee + Hole pickers — hidden until course selected -->
+        <div id="tee-hole-panel" style="display:none">
+          <div class="sm-row" style="margin-top:10px">
+            <div class="sm-sub-label">TEE</div>
+            <div class="tee-picker" id="tee-picker"></div>
+          </div>
+          <div class="sm-row" style="margin-top:10px">
+            <div class="sm-sub-label">HOLE</div>
+            <div class="hole-picker" id="hole-picker"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② HOLE STATS BAR — shown when hole selected -->
+      <div class="hole-stats-bar" id="hole-stats-bar" style="display:none">
+        <div class="hole-stat"><div class="hole-stat-val" id="hs-hole">—</div><div class="hole-stat-label">Hole</div></div>
+        <div class="hole-stat-div"></div>
+        <div class="hole-stat"><div class="hole-stat-val" id="hs-par">—</div><div class="hole-stat-label">Par</div></div>
+        <div class="hole-stat-div"></div>
+        <div class="hole-stat"><div class="hole-stat-val" id="hs-hcp">—</div><div class="hole-stat-label">Handicap</div></div>
+        <div class="hole-stat-div"></div>
+        <div class="hole-stat"><div class="hole-stat-val" id="hs-yds">—</div><div class="hole-stat-label">Yards</div></div>
+      </div>
+
+      <!-- ③ SHAPE SELECTOR — shown when hole selected -->
+      <div class="sm-panel" id="shape-panel" style="display:none">
+        <div class="sm-panel-label">🗺 HOLE SHAPE</div>
+        <div class="shape-row" id="shape-row">
+          <button class="shape-btn active" onclick="setShape('straight',this)" title="Straight">↑<span>Straight</span></button>
+          <button class="shape-btn" onclick="setShape('dogleg-left',this)" title="Dogleg Left">↖<span>Dog-L</span></button>
+          <button class="shape-btn" onclick="setShape('dogleg-right',this)" title="Dogleg Right">↗<span>Dog-R</span></button>
+          <button class="shape-btn" onclick="setShape('s-left',this)" title="S-Left">↙<span>S-Left</span></button>
+          <button class="shape-btn" onclick="setShape('s-right',this)" title="S-Right">↘<span>S-Right</span></button>
+        </div>
+        <div class="severity-row" id="severity-row" style="display:none">
+          <span class="sm-sub-label" style="margin-right:8px">BEND</span>
+          <button class="sev-btn active" onclick="setSeverity('slight',this)">Slight</button>
+          <button class="sev-btn" onclick="setSeverity('moderate',this)">Moderate</button>
+          <button class="sev-btn" onclick="setSeverity('sharp',this)">Sharp</button>
+        </div>
+      </div>
+
+      <!-- ④ ADJUSTMENTS -->
+      <div class="adjustments-grid">
+        <div class="adj-card">
+          <div class="adj-label">💨 Wind</div>
+          <div class="adj-toggle-row">
+            <button class="adj-toggle active" onclick="setWind('none',this)">None</button>
+            <button class="adj-toggle" onclick="setWind('head',this)">Head</button>
+            <button class="adj-toggle" onclick="setWind('tail',this)">Tail</button>
+            <button class="adj-toggle" onclick="setWind('cross',this)">Cross</button>
+          </div>
+          <div class="adj-input-row">
+            <input class="adj-input" id="wind-mph" type="number" min="0" max="50" value="0" placeholder="0" oninput="recalculate()">
+            <span class="adj-unit">mph</span>
+          </div>
+        </div>
+        <div class="adj-card">
+          <div class="adj-label">⛰ Slope</div>
+          <div class="adj-toggle-row">
+            <button class="adj-toggle active" onclick="setSlope('flat',this)">Flat</button>
+            <button class="adj-toggle" onclick="setSlope('up',this)">Uphill</button>
+            <button class="adj-toggle" onclick="setSlope('down',this)">Downhill</button>
+          </div>
+          <div class="adj-toggle-row">
+            <button class="adj-toggle active" id="slope-deg-mild" onclick="setSlopeDeg('mild',this)">Mild</button>
+            <button class="adj-toggle" id="slope-deg-mod" onclick="setSlopeDeg('mod',this)">Mod</button>
+            <button class="adj-toggle" id="slope-deg-steep" onclick="setSlopeDeg('steep',this)">Steep</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ DISTANCE DISPLAY -->
+      <div class="distance-display">
+        <div class="distance-raw" id="dist-raw">150</div>
+        <div class="distance-unit">yards to target</div>
+        <div id="plays-like-wrap" style="display:none">
+          <span class="plays-like" id="plays-like-text">Plays like 150 yds</span>
+        </div>
+      </div>
+
+      <!-- ⑥ SLIDER -->
+      <div class="slider-section">
+        <div class="slider-header">
+          <span class="slider-label">Distance</span>
+          <div class="laser-input-wrap">
+            <span style="font-size:14px">🔭</span>
+            <input class="laser-input" id="laser-input" type="number" placeholder="Laser" min="10" max="600" oninput="onLaserInput(this.value)">
+            <span class="laser-label">yds</span>
+          </div>
+        </div>
+        <input type="range" id="dist-slider" min="10" max="600" step="5" value="150" oninput="onSliderInput(this.value)">
+        <div class="slider-marks" id="slider-marks">
+          <span class="slider-mark">10</span>
+          <span class="slider-mark">200</span>
+          <span class="slider-mark">400</span>
+          <span class="slider-mark">600</span>
+        </div>
+      </div>
+
+      <!-- ⑦ VIEW TOGGLE -->
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" id="toggle-zones" onclick="setMapView('zones')">📐 Zone View</button>
+        <button class="view-toggle-btn" id="toggle-options" onclick="setMapView('options')">🎯 Options View</button>
+      </div>
+
+      <!-- ⑧ FAIRWAY SVG -->
+      <div class="fairway-wrap">
+        <svg class="fairway-svg" viewBox="0 0 360 300" id="fairway-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="360" height="300" fill="#050e08"/>
+          <!-- Dynamic layers all drawn by JS -->
+          <g id="svg-rough"></g>
+          <g id="svg-fairway"></g>
+          <g id="svg-green"></g>
+          <g id="svg-yardage-overlay"></g>
+          <g id="svg-hash-marks"></g>
+          <g id="zone-bands"></g>
+          <g id="zone-labels"></g>
+          <g id="svg-player"></g>
+        </svg>
+      </div>
+
+      <!-- ⑨ CADDIE CARDS -->
+      <div id="zone-cards" style="display:block">
+        <div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">
+          Add yardages in My Bag to see caddie recommendations
+        </div>
+      </div>
+
+      <!-- ⑩ OPTIONS LIST -->
+      <div id="options-list" style="display:none">
+        <div class="options-title">BEST OPTIONS</div>
+        <div id="options-inner"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-item active" onclick="switchTab('home')" id="tab-home">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="tab-item" onclick="switchTab('practice')" id="tab-practice">
+      <span class="tab-icon">📋</span>
+      <span class="tab-label">Practice</span>
+    </button>
+    <button class="tab-item" onclick="switchTab('mybag')" id="tab-mybag">
+      <span class="tab-icon">🎒</span>
+      <span class="tab-label">My Bag</span>
+    </button>
+    <button class="tab-item" onclick="switchTab('shotmaps')" id="tab-shotmaps">
+      <span class="tab-icon">🗺</span>
+      <span class="tab-label">Shot Maps</span>
+    </button>
+  </div>
+
+</div><!-- /app -->
+
+<!-- Course Search Modal -->
+<div class="modal-overlay" id="course-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Find a Course</span>
+      <button class="modal-close" onclick="closeCourseModal()">✕</button>
+    </div>
+    <div class="modal-search">
+      <input id="course-search-input" placeholder="Search by course name..." oninput="searchCourses(this.value)" autocomplete="off">
+    </div>
+    <div class="modal-results" id="course-results">
+      <div class="modal-loading">Type to search courses...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCuEj4LFnOEqKOAq2HDDj_ujviCFzlhUJQ",
+  authDomain: "birdie-blueprint.firebaseapp.com",
+  projectId: "birdie-blueprint",
+  storageBucket: "birdie-blueprint.firebasestorage.app",
+  messagingSenderId: "166124781447",
+  appId: "1:166124781447:web:08a5313676565b352d5d22"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window._db = db;
+window._auth = auth;
+window._doc = doc;
+window._getDoc = getDoc;
+window._setDoc = setDoc;
+window._updateDoc = updateDoc;
+window._serverTimestamp = serverTimestamp;
+
+// ── AUTH ──
+const googleProvider = new GoogleAuthProvider();
+const appleProvider = new OAuthProvider('apple.com');
+appleProvider.addScope('email');
+appleProvider.addScope('name');
+
+document.getElementById('google-btn').onclick = async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch(e){ showToast('Sign in failed: ' + e.message); }
+};
+
+document.getElementById('apple-btn').onclick = async () => {
+  try {
+    await signInWithPopup(auth, appleProvider);
+  } catch(e){ showToast('Sign in failed: ' + e.message); }
+};
+
+document.getElementById('guest-btn').onclick = () => {
+  window._currentUser = { uid: 'guest_' + Date.now(), displayName: 'Guest', email: null, photoURL: null };
+  launchApp(window._currentUser);
+};
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    window._currentUser = user;
+    launchApp(user);
+  }
+});
+
+async function launchApp(user) {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+
+  // Set avatar
+  const av = document.getElementById('user-avatar');
+  if (user.photoURL) {
+    av.innerHTML = `<img src="${user.photoURL}" alt="avatar">`;
+  } else {
+    av.textContent = (user.displayName || 'G')[0].toUpperCase();
+  }
+
+  // Greeting
+  const name = user.displayName ? user.displayName.split(' ')[0] : 'Golfer';
+  document.getElementById('home-name').textContent = name;
+  const h = new Date().getHours();
+  document.getElementById('time-of-day').textContent = h < 12 ? 'MORNING' : h < 17 ? 'AFTERNOON' : 'EVENING';
+
+  // Load data
+  if (!user.uid.startsWith('guest_')) {
+    await loadUserData(user.uid);
+  }
+
+  window.renderAll();
+}
+
+window.loadUserData = async function(uid) {
+  try {
+    const ref = doc(db, 'users', uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.bag) window._bagData = data.bag;
+      if (data.profile) {
+        window._profile = data.profile;
+        updateProfileUI();
+      }
+    }
+  } catch(e){ console.warn('Load error:', e); }
+};
+
+window.saveUserBag = async function(bagData) {
+  const user = window._currentUser;
+  if (!user || user.uid.startsWith('guest_')) { showToast('Sign in to save data'); return; }
+  try {
+    await setDoc(doc(db, 'users', user.uid), { bag: bagData, updatedAt: serverTimestamp() }, { merge: true });
+    showToast('✓ Bag saved!');
+  } catch(e){ showToast('Save failed'); }
+};
+
+window.saveUserYardages = async function(yardages) {
+  const user = window._currentUser;
+  if (!user || user.uid.startsWith('guest_')) { showToast('Sign in to save data'); return; }
+  try {
+    await setDoc(doc(db, 'users', user.uid), { yardages, updatedAt: serverTimestamp() }, { merge: true });
+    showToast('✓ Yardages saved!');
+  } catch(e){ showToast('Save failed'); }
+};
+
+window.saveUserProfile = async function(profileData) {
+  const user = window._currentUser;
+  if (!user || user.uid.startsWith('guest_')) return;
+  try {
+    await setDoc(doc(db, 'users', user.uid), { profile: profileData, updatedAt: serverTimestamp() }, { merge: true });
+  } catch(e){ console.warn(e); }
+};
+</script>
+
+<script>
+// ══════════════════════════════════════════════
+// APP STATE
+// ══════════════════════════════════════════════
+window._bagData = null;
+window._profile = { xp: 0, level: 1, streak: 0, sessions: 0, drillsDone: 0 };
+window._yardages = {};
+window._sessionActive = false;
+window._sessionCompleted = [];
+
+// ── DEFAULT CLUBS ──
+const DEFAULT_CLUBS = [
+  { id:'driver', name:'Driver', display:'Driver', category:'Driver', on:true, isShort:false },
+  { id:'3w', name:'3W', display:'3W', category:'Fairway Woods', on:true, isShort:false },
+  { id:'5w', name:'5W', display:'5W', category:'Fairway Woods', on:false, isShort:false },
+  { id:'3h', name:'3H', display:'3H', category:'Hybrids', on:false, isShort:false },
+  { id:'4h', name:'4H', display:'4H', category:'Hybrids', on:true, isShort:false },
+  { id:'5h', name:'5H', display:'5H', category:'Hybrids', on:false, isShort:false },
+  { id:'4i', name:'4i', display:'4i', category:'Irons', on:false, isShort:false },
+  { id:'5i', name:'5i', display:'5i', category:'Irons', on:true, isShort:false },
+  { id:'6i', name:'6i', display:'6i', category:'Irons', on:true, isShort:false },
+  { id:'7i', name:'7i', display:'7i', category:'Irons', on:true, isShort:true },
+  { id:'8i', name:'8i', display:'8i', category:'Irons', on:true, isShort:true },
+  { id:'9i', name:'9i', display:'9i', category:'Irons', on:true, isShort:true },
+  { id:'pw', name:'PW', display:'PW', category:'Wedges', on:true, isShort:true },
+  { id:'gw', name:'GW', display:'GW', category:'Wedges', on:true, isShort:true },
+  { id:'sw', name:'SW', display:'SW', category:'Wedges', on:true, isShort:true },
+  { id:'lw', name:'LW', display:'LW', category:'Wedges', on:false, isShort:true },
+];
+
+let clubs = JSON.parse(localStorage.getItem('bb_clubs') || 'null') || DEFAULT_CLUBS.map(c=>({...c}));
+let yardages = JSON.parse(localStorage.getItem('bb_yardages') || '{}');
+
+// ── DRILLS DATA ──
+const DRILLS = [
+  { id:'d1', name:'9-to-3 Swing Drill', category:'Full Swing', phase:'Technical', xp:50, duration:'10 min',
+    desc:'Focus on a controlled 9-to-3 swing path. Place a tee 6 inches in front of the ball. Goal: clip the tee after impact. Repeat 20 times with a 7-iron. Track strike quality, not distance.' },
+  { id:'d2', name:'Alignment Stick Drill', category:'Full Swing', phase:'Transfer', xp:40, duration:'8 min',
+    desc:'Place two alignment sticks on the ground parallel to your target line. Hit 15 shots focusing on keeping your club path between the sticks. Use a 6-iron.' },
+  { id:'d3', name:'Clock Face Wedge', category:'Short Game', phase:'Technical', xp:60, duration:'12 min',
+    desc:'Hit 5 shots each at 7:30, 9:00, 10:00, and full with your SW. Log carry distance for each. Compare to your yardage chart and note discrepancies.' },
+  { id:'d4', name:'Variable Distance Chips', category:'Short Game', phase:'Variable', xp:70, duration:'15 min',
+    desc:'Pick 8 random distances from 10-50 yards. Hit one shot to each with no warm-up swings. Score yourself: within 5 feet = 2pts, 10 feet = 1pt. Target: 10+ points.' },
+  { id:'d5', name:'3-Ball Putting Gate', category:'Putting', phase:'Technical', xp:45, duration:'10 min',
+    desc:'Set two tees 1 inch wider than your putter face, 6 inches in front of the ball. Putt 10 balls from 6 feet. Goal: no contact with the tee gates. Track success rate.' },
+];
+
+// ── WIND/SLOPE STATE — declared in Shot Maps section below ──
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-' + (tab==='mybag'?'mybag':tab==='shotmaps'?'shotmaps':tab)).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+window.switchTab = switchTab;
+
+// ══════════════════════════════════════════════
+// RENDER ALL
+// ══════════════════════════════════════════════
+window.renderAll = function() {
+  updateProfileUI();
+  renderWeekDays();
+  renderDrills();
+  renderClubBuilder();
+  renderYardageChart();
+  recalculate();
+};
+
+function updateProfileUI() {
+  const p = window._profile;
+  document.getElementById('header-streak').textContent = p.streak || 0;
+  document.getElementById('stat-streak').textContent = p.streak || 0;
+  document.getElementById('stat-sessions').textContent = p.sessions || 0;
+  document.getElementById('stat-drills').textContent = p.drillsDone || 0;
+  const xpLevels = [0,500,1200,2200,3500,5000];
+  const lvl = p.level || 1;
+  const xpCur = p.xp || 0;
+  const xpNext = xpLevels[lvl] || 5000;
+  const xpPrev = xpLevels[lvl-1] || 0;
+  const pct = Math.min(100, Math.round(((xpCur - xpPrev) / (xpNext - xpPrev)) * 100));
+  document.getElementById('xp-label').textContent = `${xpCur} / ${xpNext} XP to Level ${lvl+1}`;
+  document.getElementById('xp-pct').textContent = pct + '%';
+  document.getElementById('xp-fill').style.width = pct + '%';
+}
+
+// ══════════════════════════════════════════════
+// PRACTICE
+// ══════════════════════════════════════════════
+function renderWeekDays() {
+  const days = ['M','T','W','T','F','S','S'];
+  const today = new Date().getDay();
+  const todayIdx = today === 0 ? 6 : today - 1;
+  document.getElementById('week-days').innerHTML = days.map((d,i) => {
+    const cls = i < todayIdx ? 'done' : i === todayIdx ? 'today' : '';
+    const num = new Date(Date.now() - (todayIdx-i)*86400000).getDate();
+    return `<div class="week-day ${cls}"><span class="week-day-num">${num}</span>${d}</div>`;
+  }).join('');
+}
+
+function renderDrills() {
+  document.getElementById('drill-list').innerHTML = DRILLS.map(d => `
+    <div class="drill-card" id="dc-${d.id}" onclick="toggleDrill('${d.id}')">
+      <div class="drill-card-top">
+        <div>
+          <div class="drill-name">${d.name}</div>
+          <div class="drill-meta">
+            <span class="pill pill-gold">${d.category}</span>
+            <span class="pill pill-blue">${d.phase}</span>
+            <span class="pill pill-green">⏱ ${d.duration}</span>
+          </div>
+        </div>
+        <div class="drill-check" id="chk-${d.id}"></div>
+      </div>
+      <div class="drill-desc">${d.desc}</div>
+      <div class="drill-footer">
+        <span class="drill-xp">⚡ +${d.xp} XP</span>
+        <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();completeDrill('${d.id}')">Mark Complete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.toggleDrill = function(id) {
+  const card = document.getElementById('dc-' + id);
+  card.classList.toggle('expanded');
+};
+
+window.startSession = function() {
+  window._sessionActive = true;
+  window._sessionCompleted = [];
+  document.getElementById('session-bar').style.display = 'flex';
+  updateSessionBar();
+  showToast('Session started! Complete your drills.');
+};
+
+window.completeDrill = function(id) {
+  if (!window._sessionCompleted.includes(id)) {
+    window._sessionCompleted.push(id);
+    const card = document.getElementById('dc-' + id);
+    card.classList.add('completed');
+    document.getElementById('chk-' + id).textContent = '✓';
+    const drill = DRILLS.find(d => d.id === id);
+    window._profile.xp = (window._profile.xp || 0) + (drill ? drill.xp : 50);
+    window._profile.drillsDone = (window._profile.drillsDone || 0) + 1;
+    updateProfileUI();
+    updateSessionBar();
+    showToast(`⚡ +${drill ? drill.xp : 50} XP — Drill complete!`);
+  }
+};
+
+function updateSessionBar() {
+  const done = window._sessionCompleted.length;
+  const total = DRILLS.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('session-count').textContent = `${done} / ${total}`;
+  document.getElementById('session-prog-fill').style.width = pct + '%';
+}
+
+window.finishSession = function() {
+  window._sessionActive = false;
+  window._profile.sessions = (window._profile.sessions || 0) + 1;
+  window._profile.streak = (window._profile.streak || 0) + 1;
+  document.getElementById('session-bar').style.display = 'none';
+  window._sessionCompleted = [];
+  DRILLS.forEach(d => {
+    const card = document.getElementById('dc-' + d.id);
+    if (card) { card.classList.remove('completed','expanded'); }
+    const chk = document.getElementById('chk-' + d.id);
+    if (chk) chk.textContent = '';
+  });
+  updateProfileUI();
+  if (window.saveUserProfile) saveUserProfile(window._profile);
+  showToast('🎉 Session complete! Great work.');
+  switchTab('home');
+};
+
+// ══════════════════════════════════════════════
+// MY BAG — CLUB BUILDER
+// ══════════════════════════════════════════════
+function renderClubBuilder() {
+  const categories = [...new Set(clubs.map(c=>c.category))];
+  document.getElementById('club-builder').innerHTML = categories.map(cat => `
+    <div class="club-category">
+      <div class="club-cat-title">${cat}</div>
+      ${clubs.filter(c=>c.category===cat).map(c => `
+        <div class="club-item">
+          <div class="club-toggle ${c.on?'on':''}" onclick="toggleClub('${c.id}')" id="tog-${c.id}"></div>
+          <div class="club-name">${c.name}</div>
+          <input class="club-custom-name" id="disp-${c.id}" value="${c.display}" placeholder="${c.name}"
+            onchange="updateClubDisplay('${c.id}',this.value)" onclick="event.stopPropagation()">
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+window.toggleClub = function(id) {
+  const club = clubs.find(c=>c.id===id);
+  if (!club) return;
+  club.on = !club.on;
+  const tog = document.getElementById('tog-' + id);
+  if (tog) tog.className = 'club-toggle' + (club.on?' on':'');
+};
+
+window.updateClubDisplay = function(id, val) {
+  const club = clubs.find(c=>c.id===id);
+  if (club) club.display = val.trim() || club.name;
+};
+
+window.saveBag = function() {
+  localStorage.setItem('bb_clubs', JSON.stringify(clubs));
+  if (window.saveUserBag) saveUserBag({ clubs });
+  renderYardageChart();
+  showBagTab('yardages');
+};
+
+function showBagTab(tab) {
+  document.querySelectorAll('.bag-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('bag-setup').style.display = tab==='setup' ? 'block' : 'none';
+  document.getElementById('bag-yardages').style.display = tab==='yardages' ? 'block' : 'none';
+  document.querySelectorAll('.bag-tab')[tab==='setup'?0:1].classList.add('active');
+}
+window.showBagTab = showBagTab;
+
+// ══════════════════════════════════════════════
+// MY BAG — YARDAGE CHART
+// ══════════════════════════════════════════════
+function renderYardageChart() {
+  const activeClubs = clubs.filter(c=>c.on);
+  const longClubs = activeClubs.filter(c=>!c.isShort);
+  const shortClubs = activeClubs.filter(c=>c.isShort);
+
+  let html = '';
+
+  // Long clubs — Full only
+  if (longClubs.length) {
+    html += `<div class="yardage-section-title">Long Clubs — Full Swing</div>
+    <table class="yardage-table" style="margin:0 0 8px">
+      <thead><tr>
+        <th>Club</th>
+        <th>Full (yds)</th>
+      </tr></thead><tbody>`;
+    longClubs.forEach(c => {
+      const y = yardages[c.id] || {};
+      html += `<tr>
+        <td>${c.display}</td>
+        <td><input class="yardage-input full-only" type="number" placeholder="—"
+          id="y-${c.id}-full" value="${y.full||''}"
+          oninput="updateYardage('${c.id}','full',this.value)"></td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+  }
+
+  // Section divider
+  if (longClubs.length && shortClubs.length) {
+    html += `<div style="padding:8px 18px 0">
+      <div class="section-divider"></div>
+    </div>`;
+  }
+
+  // Short clubs — Clock system
+  if (shortClubs.length) {
+    html += `<div class="yardage-section-title">Short Clubs — Swing %</div>
+    <table class="yardage-table" style="margin:0 0 8px">
+      <thead><tr>
+        <th>Club</th>
+        <th>25%</th>
+        <th>50%</th>
+        <th>75%</th>
+        <th>100%</th>
+      </tr></thead><tbody>`;
+    shortClubs.forEach(c => {
+      const y = yardages[c.id] || {};
+      html += `<tr>
+        <td>${c.display}</td>
+        <td><input class="yardage-input" type="number" placeholder="—" id="y-${c.id}-c730" value="${y.c730||''}" oninput="updateYardage('${c.id}','c730',this.value)"></td>
+        <td><input class="yardage-input" type="number" placeholder="—" id="y-${c.id}-c900" value="${y.c900||''}" oninput="updateYardage('${c.id}','c900',this.value)"></td>
+        <td><input class="yardage-input" type="number" placeholder="—" id="y-${c.id}-c1000" value="${y.c1000||''}" oninput="updateYardage('${c.id}','c1000',this.value)"></td>
+        <td><input class="yardage-input" type="number" placeholder="—" id="y-${c.id}-full" value="${y.full||''}" oninput="updateYardage('${c.id}','full',this.value)"></td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+  }
+
+  document.getElementById('yardage-chart').innerHTML = html;
+}
+
+window.updateYardage = function(clubId, key, val) {
+  if (!yardages[clubId]) yardages[clubId] = {};
+  yardages[clubId][key] = parseInt(val) || null;
+};
+
+window.saveYardages = function() {
+  localStorage.setItem('bb_yardages', JSON.stringify(yardages));
+  if (window.saveUserYardages) saveUserYardages(yardages);
+  recalculate();
+};
+
+// ══════════════════════════════════════════════
+// SHOT MAPS — STATE
+// ══════════════════════════════════════════════
+let mapView    = 'zones';
+let windDir    = 'none';
+let slopeDir   = 'flat', slopeDeg = 'mild';
+let rawDist    = 150;
+let holeTotal  = 0;
+let smCourse   = null, smCourseData = null;
+let smTee      = null, smTees = [];
+let smHole     = null, smHoleData = null;
+let smShape    = 'straight', smSeverity = 'slight';
+const API_KEY  = 'XMDVLQJYDREBTEXULQ4I2KCY7Q';
+const SWING_PCT   = { c730:'25%', c900:'50%', c1000:'75%', full:'100%' };
+const SWING_ORDER = ['c730','c900','c1000','full'];
+const SWING_DESC  = { c730:'25% swing', c900:'50% swing', c1000:'75% swing', full:'Full swing' };
+
+window.setMapView = function(v) {
+  mapView = v;
+  document.getElementById('toggle-zones').classList.toggle('active',v==='zones');
+  document.getElementById('toggle-options').classList.toggle('active',v==='options');
+  document.getElementById('zone-cards').style.display   = v==='zones'  ?'block':'none';
+  document.getElementById('options-list').style.display = v==='options'?'block':'none';
+  recalculate();
+};
+window.setWind = function(dir,el) {
+  windDir=dir;
+  el.closest('.adj-card').querySelectorAll('.adj-toggle').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); recalculate();
+};
+window.setSlope = function(dir,el) {
+  slopeDir=dir;
+  el.parentElement.querySelectorAll('.adj-toggle').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); recalculate();
+};
+window.setSlopeDeg = function(deg,el) {
+  slopeDeg=deg;
+  document.querySelectorAll('#slope-deg-mild,#slope-deg-mod,#slope-deg-steep').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); recalculate();
+};
+function getAdjustedDist(raw) {
+  let adj=raw;
+  const mph=parseInt(document.getElementById('wind-mph')?.value)||0;
+  if(windDir==='head') adj+=mph*1.0;
+  else if(windDir==='tail') adj-=mph*0.8;
+  else if(windDir==='cross') adj+=mph*0.4;
+  const sp=slopeDeg==='mild'?0.05:slopeDeg==='mod'?0.10:0.17;
+  if(slopeDir==='up') adj*=(1+sp);
+  else if(slopeDir==='down') adj*=(1-sp*0.8);
+  return Math.round(adj/5)*5;
+}
+window.onSliderInput = function(val) {
+  rawDist=parseInt(val);
+  document.getElementById('laser-input').value='';
+  recalculate();
+};
+window.onLaserInput = function(val) {
+  const v=parseInt(val);
+  if(v>=10&&v<=600){ rawDist=Math.round(v/5)*5; document.getElementById('dist-slider').value=rawDist; recalculate(); }
+};
+
+// ── SHAPE ──
+window.setShape = function(shape,el) {
+  smShape=shape;
+  document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('severity-row').style.display = shape!=='straight'?'flex':'none';
+  saveHoleShape(); recalculate();
+};
+window.setSeverity = function(sev,el) {
+  smSeverity=sev;
+  document.querySelectorAll('.sev-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); saveHoleShape(); recalculate();
+};
+async function saveHoleShape() {
+  const user=window._currentUser;
+  if(!user||!smCourse||!smHole||user.uid.startsWith('guest_')) return;
+  try {
+    await window._setDoc(window._doc(window._db,'users',user.uid,'courseShapes',`${smCourse.id}_h${smHole}`),
+      {shape:smShape,severity:smSeverity},{merge:true});
+  } catch(e){console.warn(e);}
+}
+async function loadHoleShape() {
+  const user=window._currentUser;
+  if(!user||!smCourse||!smHole||user.uid.startsWith('guest_')) return;
+  try {
+    const snap=await window._getDoc(window._doc(window._db,'users',user.uid,'courseShapes',`${smCourse.id}_h${smHole}`));
+    if(snap.exists()){
+      const d=snap.data(); smShape=d.shape||'straight'; smSeverity=d.severity||'slight';
+      document.querySelectorAll('.shape-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes(`'${smShape}'`)));
+      document.querySelectorAll('.sev-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes(`'${smSeverity}'`)));
+      document.getElementById('severity-row').style.display = smShape!=='straight'?'flex':'none';
+    }
+  } catch(e){console.warn(e);}
+}
+
+// ── COURSE SEARCH ──
+let courseSearchTimeout;
+window.openCourseModal  = function(){ document.getElementById('course-modal').classList.add('open'); setTimeout(()=>document.getElementById('course-search-input').focus(),100); };
+window.closeCourseModal = function(){ document.getElementById('course-modal').classList.remove('open'); };
+window.searchCourses = function(query) {
+  clearTimeout(courseSearchTimeout);
+  const res=document.getElementById('course-results');
+  if(!query||query.length<3){ res.innerHTML='<div class="modal-loading">Type at least 3 characters...</div>'; return; }
+  res.innerHTML='<div class="modal-loading">Searching...</div>';
+  courseSearchTimeout=setTimeout(()=>fetchCourses(query),500);
+};
+async function fetchCourses(query) {
+  const res=document.getElementById('course-results');
+  try {
+    const r=await fetch(`https://api.golfcourseapi.com/v1/search?search_query=${encodeURIComponent(query)}`,
+      {headers:{'Authorization':`Key ${API_KEY}`}});
+    const data=await r.json();
+    const courses=data.courses||data.results||data.data||[];
+    if(!courses.length){res.innerHTML='<div class="modal-loading">No courses found.</div>';return;}
+    res.innerHTML=courses.slice(0,15).map(c=>{
+      const id=c.id||c.course_id||c.club_id||'';
+      const name=c.club_name||c.name||'Unknown';
+      const loc=[c.city,c.state,c.country].filter(Boolean).join(', ');
+      const safe=JSON.stringify({id,name,location:loc}).replace(/"/g,'&quot;');
+      return `<div class="modal-course-item" onclick="selectCourse(${safe})">
+        <div class="modal-course-name">${name}</div>
+        <div class="modal-course-loc">${loc}</div></div>`;
+    }).join('');
+  } catch(e){ res.innerHTML=`<div class="modal-loading">Error: ${e.message}</div>`; }
+}
+
+window.selectCourse = async function(course) {
+  smCourse=course; smHole=null; smHoleData=null; smTee=null; smCourseData=null;
+  closeCourseModal();
+  document.getElementById('course-bar').innerHTML=`
+    <div class="course-selected">
+      <div>
+        <div class="course-selected-name">⛳ ${course.name}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${course.location}</div>
+      </div>
+      <button class="course-clear" onclick="clearCourse()">✕ Clear</button>
+    </div>`;
+  showToast('Loading course data...');
+  await fetchCourseDetail(course.id);
+};
+
+async function fetchCourseDetail(courseId) {
+  try {
+    const r=await fetch(`https://api.golfcourseapi.com/v1/courses/${courseId}`,
+      {headers:{'Authorization':`Key ${API_KEY}`}});
+    parseCourseData(await r.json());
+  } catch(e){ showToast('Could not load course data'); console.warn(e); }
+}
+
+function parseCourseData(data) {
+  const course=data.course||data;
+  const tees=course.tees||data.tees||[];
+  if(!tees.length){ showToast('No tee data found'); return; }
+  smTees=tees.map(t=>({
+    name:t.tee_name||t.name||t.color||'Unknown',
+    color:guessTeeColor(t.tee_name||t.name||''),
+    holes:(t.holes||[]).map(h=>({
+      hole:parseInt(h.hole_number||h.hole||0),
+      par:parseInt(h.par||4),
+      yardage:parseInt(h.yardage||h.distance||0),
+      handicap:parseInt(h.handicap||h.stroke_index||0)
+    })).filter(h=>h.hole>0)
+  })).filter(t=>t.holes.length>0);
+  if(!smTees.length){ showToast('Could not parse scorecard'); return; }
+  smTee=smTees[Math.floor(smTees.length/2)].name;
+  renderTeePicker(); renderHolePicker();
+  document.getElementById('tee-hole-panel').style.display='block';
+  document.getElementById('shape-panel').style.display='block';
+  showToast(`✓ ${smCourse.name} loaded`);
+}
+
+function guessTeeColor(name) {
+  const n=name.toLowerCase();
+  if(n.includes('black')||n.includes('champion')) return 'black';
+  if(n.includes('blue')||n.includes('back'))       return 'blue';
+  if(n.includes('white')||n.includes('middle'))    return 'white';
+  if(n.includes('red')||n.includes('forward'))     return 'red';
+  if(n.includes('gold')||n.includes('senior'))     return 'gold';
+  if(n.includes('green'))                           return 'green';
+  return 'blue';
+}
+
+function renderTeePicker() {
+  const cmap={black:'tee-black',blue:'tee-blue',white:'tee-white',red:'tee-red',gold:'tee-gold',green:'tee-green'};
+  document.getElementById('tee-picker').innerHTML=smTees.map(t=>{
+    const cls=cmap[t.color]||'tee-blue';
+    return `<button class="tee-btn ${cls} ${t.name===smTee?'active':''}" onclick="selectTee('${t.name}',this)">${t.name}</button>`;
+  }).join('');
+}
+window.selectTee = function(name,el) {
+  smTee=name;
+  document.querySelectorAll('.tee-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  if(smHole) selectHoleNumber(smHole);
+};
+
+function renderHolePicker() {
+  const teeObj=smTees.find(t=>t.name===smTee)||smTees[0];
+  const count=teeObj?teeObj.holes.length:18;
+  document.getElementById('hole-picker').innerHTML=
+    Array.from({length:count},(_,i)=>i+1).map(n=>
+      `<button class="hole-btn ${smHole===n?'active':''}" onclick="selectHoleNumber(${n})">${n}</button>`
+    ).join('');
+}
+
+window.selectHoleNumber = async function(n) {
+  smHole=n;
+  const teeObj=smTees.find(t=>t.name===smTee)||smTees[0];
+  smHoleData=teeObj?.holes.find(h=>h.hole===n)||null;
+  document.querySelectorAll('.hole-btn').forEach(b=>b.classList.toggle('active',parseInt(b.textContent)===n));
+  if(smHoleData){
+    holeTotal=smHoleData.yardage; rawDist=smHoleData.yardage;
+    const sliderMax=Math.max(600,Math.ceil(holeTotal/50)*50+50);
+    const sl=document.getElementById('dist-slider');
+    sl.max=sliderMax; sl.value=rawDist;
+    document.getElementById('slider-marks').innerHTML=`
+      <span class="slider-mark">10</span>
+      <span class="slider-mark">${Math.round(holeTotal/2)}</span>
+      <span class="slider-mark">${holeTotal}</span>`;
+    document.getElementById('hs-hole').textContent=n;
+    document.getElementById('hs-par').textContent=smHoleData.par;
+    document.getElementById('hs-hcp').textContent=smHoleData.handicap||'—';
+    document.getElementById('hs-yds').textContent=smHoleData.yardage;
+    document.getElementById('hole-stats-bar').style.display='flex';
+    if(!smShape||smShape==='straight'){
+      smShape=smHoleData.par===5?'dogleg-left':'straight'; smSeverity='slight';
+    }
+    await loadHoleShape();
+    recalculate();
+  }
+};
+
+window.clearCourse = function() {
+  smCourse=null; smCourseData=null; smTee=null; smTees=[];
+  smHole=null; smHoleData=null; holeTotal=0; smShape='straight'; smSeverity='slight';
+  document.getElementById('course-bar').innerHTML=`
+    <div class="course-search-bar" onclick="openCourseModal()">
+      <span class="course-icon">🔍</span>
+      <span style="flex:1;color:var(--text3);font-size:13px">Search for a course...</span>
+      <span class="pill pill-gold" style="font-size:10px">Live</span>
+    </div>`;
+  document.getElementById('tee-hole-panel').style.display='none';
+  document.getElementById('hole-stats-bar').style.display='none';
+  document.getElementById('shape-panel').style.display='none';
+  rawDist=150; document.getElementById('dist-slider').value=150;
+  recalculate();
+};
+
+// ── SHOT LOGIC ──
+function getAllShots() {
+  const shots=[];
+  clubs.filter(c=>c.on).forEach(c=>{
+    const y=yardages[c.id]||{};
+    if(c.isShort){ SWING_ORDER.forEach(k=>{ if(y[k]) shots.push({club:c.display,clubId:c.id,swingKey:k,dist:y[k]}); }); }
+    else { if(y.full) shots.push({club:c.display,clubId:c.id,swingKey:'full',dist:y.full}); }
+  });
+  return shots.sort((a,b)=>a.dist-b.dist);
+}
+function getTop3(adjDist) {
+  const shots=getAllShots(); if(!shots.length) return [];
+  const scored=shots.map(s=>({...s,diff:Math.abs(s.dist-adjDist)})).sort((a,b)=>a.diff-b.diff);
+  const result=[],used=new Set();
+  for(const s of scored){ if(result.length>=3) break; if(!used.has(s.clubId)){result.push(s);used.add(s.clubId);} }
+  for(const s of scored){ if(result.length>=3) break; if(!result.find(r=>r.clubId===s.clubId&&r.swingKey===s.swingKey)) result.push(s); }
+  return result.slice(0,3);
+}
+
+// ── RECALCULATE ──
+function recalculate() {
+  const adj=getAdjustedDist(rawDist);
+  document.getElementById('dist-raw').textContent=rawDist;
+  const pw=document.getElementById('plays-like-wrap');
+  if(adj!==rawDist){ pw.style.display='block'; document.getElementById('plays-like-text').textContent=`Plays like ${adj} yds`; }
+  else pw.style.display='none';
+  drawFullFairway(adj);
+  if(mapView==='zones') renderCaddieCards(adj); else renderOptionsCards(adj);
+}
+
+// ── FAIRWAY DRAWING ──
+function drawFullFairway(adjDist) {
+  const SVG_W=360,SVG_H=300,PIN_Y=28,PLAYER_Y=286,RANGE_Y=258;
+  const total=holeTotal>0?holeTotal:rawDist;
+  const pct=Math.min(1,rawDist/total);
+  // Fairway width — wider when far from green (more corridor visible), narrower up close
+  const fwyHalf=62+(90-62)*(1-pct);
+  // Dogleg bend — shifts corridor center as you "walk up"
+  const bendStrength=smSeverity==='slight'?0.10:smSeverity==='moderate'?0.22:0.36;
+  const dogFrac=0.55;
+  let cx=SVG_W/2;
+  if(smShape==='dogleg-right'||smShape==='dogleg-left'){
+    const pastDog=Math.max(0,(1-pct)-dogFrac)/(1-dogFrac);
+    const dir=smShape==='dogleg-right'?1:-1;
+    cx+=dir*pastDog*bendStrength*160;
+  }
+  const greenRx=38+(1-pct)*28, greenRy=16+(1-pct)*12;
+  // Fairway edge coords at top and bottom
+  const lTop=cx-fwyHalf*0.62,rTop=cx+fwyHalf*0.62;
+  const lBot=cx-fwyHalf,     rBot=cx+fwyHalf;
+  // Build fairway path based on shape
+  let fwyPath,hlPath;
+  const hlH=fwyHalf*0.44;
+  if(smShape==='straight'){
+    fwyPath=`M${lBot},${PLAYER_Y} L${lTop},${PIN_Y} L${rTop},${PIN_Y} L${rBot},${PLAYER_Y} Z`;
+    hlPath=`M${cx-hlH},${PLAYER_Y} L${cx-hlH*0.65},${PIN_Y} L${cx+hlH*0.65},${PIN_Y} L${cx+hlH},${PLAYER_Y} Z`;
+  } else if(smShape==='dogleg-right'){
+    const mY=PIN_Y+RANGE_Y*0.42,mX=cx-bendStrength*70;
+    fwyPath=`M${lBot},${PLAYER_Y} Q${mX-fwyHalf},${mY} ${lTop},${PIN_Y} L${rTop},${PIN_Y} Q${mX+fwyHalf},${mY} ${rBot},${PLAYER_Y} Z`;
+    hlPath=`M${cx-hlH},${PLAYER_Y} Q${mX-hlH*0.5},${mY} ${cx-hlH*0.6},${PIN_Y} L${cx+hlH*0.6},${PIN_Y} Q${mX+hlH*0.5},${mY} ${cx+hlH},${PLAYER_Y} Z`;
+  } else if(smShape==='dogleg-left'){
+    const mY=PIN_Y+RANGE_Y*0.42,mX=cx+bendStrength*70;
+    fwyPath=`M${lBot},${PLAYER_Y} Q${mX-fwyHalf},${mY} ${lTop},${PIN_Y} L${rTop},${PIN_Y} Q${mX+fwyHalf},${mY} ${rBot},${PLAYER_Y} Z`;
+    hlPath=`M${cx-hlH},${PLAYER_Y} Q${mX-hlH*0.5},${mY} ${cx-hlH*0.6},${PIN_Y} L${cx+hlH*0.6},${PIN_Y} Q${mX+hlH*0.5},${mY} ${cx+hlH},${PLAYER_Y} Z`;
+  } else if(smShape==='s-right'){
+    const m1Y=PIN_Y+RANGE_Y*0.28,m2Y=PIN_Y+RANGE_Y*0.66;
+    fwyPath=`M${lBot},${PLAYER_Y} Q${cx-fwyHalf*1.25},${m2Y} ${cx-fwyHalf*0.5},${m1Y} Q${cx+fwyHalf*0.3},${PIN_Y+RANGE_Y*0.08} ${lTop},${PIN_Y} L${rTop},${PIN_Y} Q${cx+fwyHalf*0.3+fwyHalf},${PIN_Y+RANGE_Y*0.08} ${cx+fwyHalf*0.5+fwyHalf},${m1Y} Q${cx+fwyHalf*1.25},${m2Y} ${rBot},${PLAYER_Y} Z`;
+    hlPath=`M${cx-hlH},${PLAYER_Y} L${cx-hlH*0.6},${PIN_Y} L${cx+hlH*0.6},${PIN_Y} L${cx+hlH},${PLAYER_Y} Z`;
+  } else {
+    const m1Y=PIN_Y+RANGE_Y*0.28,m2Y=PIN_Y+RANGE_Y*0.66;
+    fwyPath=`M${lBot},${PLAYER_Y} Q${cx+fwyHalf*1.25},${m2Y} ${cx+fwyHalf*0.5},${m1Y} Q${cx-fwyHalf*0.3},${PIN_Y+RANGE_Y*0.08} ${lTop},${PIN_Y} L${rTop},${PIN_Y} Q${cx-fwyHalf*0.3-fwyHalf},${PIN_Y+RANGE_Y*0.08} ${cx-fwyHalf*0.5-fwyHalf},${m1Y} Q${cx-fwyHalf*1.25},${m2Y} ${rBot},${PLAYER_Y} Z`;
+    hlPath=`M${cx-hlH},${PLAYER_Y} L${cx-hlH*0.6},${PIN_Y} L${cx+hlH*0.6},${PIN_Y} L${cx+hlH},${PLAYER_Y} Z`;
+  }
+  // Rough background
+  document.getElementById('svg-rough').innerHTML=`<rect width="${SVG_W}" height="${SVG_H}" fill="#0c1e0e"/>`;
+  // Fairway
+  document.getElementById('svg-fairway').innerHTML=`<path d="${fwyPath}" fill="#183820"/><path d="${hlPath}" fill="#1e4a25" opacity="0.65"/>`;
+  // Green + pin + yardage overlay
+  document.getElementById('svg-green').innerHTML=`
+    <ellipse cx="${cx}" cy="${PIN_Y}" rx="${greenRx}" ry="${greenRy}" fill="#1f5e30"/>
+    <ellipse cx="${cx}" cy="${PIN_Y}" rx="${greenRx*0.68}" ry="${greenRy*0.68}" fill="#2a7a40"/>
+    <ellipse cx="${cx}" cy="${PIN_Y}" rx="${greenRx*0.4}" ry="${greenRy*0.4}" fill="#33924c"/>
+    <ellipse cx="${cx}" cy="${PIN_Y}" rx="${greenRx}" ry="${greenRy}" fill="none" stroke="#2a6e38" stroke-width="2.5"/>
+    <line x1="${cx}" y1="${PIN_Y-greenRy+2}" x2="${cx}" y2="${PIN_Y-greenRy-14}" stroke="#dde8dd" stroke-width="1.5"/>
+    <polygon points="${cx},${PIN_Y-greenRy-14} ${cx+11},${PIN_Y-greenRy-9} ${cx},${PIN_Y-greenRy-4}" fill="#d04545"/>
+    <text x="${cx}" y="${PIN_Y+5}" text-anchor="middle" fill="#f7d070"
+      font-size="${Math.max(10,Math.min(18,greenRy))}px" font-family="DM Mono"
+      font-weight="700" opacity="0.5">${rawDist}</text>`;
+  // Hash marks
+  const distToY=d=>PLAYER_Y-(d/rawDist)*RANGE_Y;
+  const eL=y=>lTop+(lBot-lTop)*((y-PIN_Y)/RANGE_Y);
+  const eR=y=>rTop+(rBot-rTop)*((y-PIN_Y)/RANGE_Y);
+  const step=rawDist<=75?10:rawDist<=200?25:50;
+  let hashes='';
+  for(let d=step;d<rawDist;d+=step){
+    const y=distToY(d); if(y<PIN_Y+18||y>PLAYER_Y-16) continue;
+    const xl=eL(y)+3,xr=eR(y)-3;
+    hashes+=`
+      <line x1="${xl}" y1="${y}" x2="${xl+10}" y2="${y}" stroke="#fff" stroke-width="0.8" opacity="0.15"/>
+      <line x1="${xr-10}" y1="${y}" x2="${xr}" y2="${y}" stroke="#fff" stroke-width="0.8" opacity="0.15"/>
+      <text x="${xr+5}" y="${y+4}" fill="#6a8870" font-size="7.5" font-family="DM Mono" opacity="0.65">${d}</text>`;
+  }
+  document.getElementById('svg-hash-marks').innerHTML=hashes;
+  // Player
+  document.getElementById('svg-player').innerHTML=`
+    <circle cx="${cx}" cy="${PLAYER_Y}" r="7" fill="#e8b84b" stroke="#f7d070" stroke-width="2.5"/>
+    <text x="${cx}" y="${PLAYER_Y+14}" text-anchor="middle" fill="#e8b84b" font-size="8" font-family="DM Sans" font-weight="700">YOU</text>`;
+  // Zone bands
+  drawZoneBands(adjDist,cx,lTop,rTop,lBot,rBot,PIN_Y,PLAYER_Y,RANGE_Y);
+}
+
+function drawZoneBands(adjDist,cx,lTop,rTop,lBot,rBot,PIN_Y,PLAYER_Y,RANGE_Y) {
+  const top3=getTop3(adjDist);
+  if(!top3.length){ document.getElementById('zone-bands').innerHTML=''; document.getElementById('zone-labels').innerHTML=''; return; }
+
+  const BAND_H=24;
+  const ZC=[
+    {fill:'#e8b84b',stroke:'#f7d070',tf:'#1a1000'},
+    {fill:'#5aaae0',stroke:'#8ac8f0',tf:'#071525'},
+    {fill:'#3ec870',stroke:'#7ae0a8',tf:'#041510'}
+  ];
+
+  // Positioning: rawDist = full scale (you → pin).
+  // PIN_Y = green center. A shot carrying rawDist lands exactly at PIN_Y.
+  // A shot carrying less lands (rawDist - dist)/rawDist * RANGE_Y below PIN_Y.
+  // A shot carrying MORE than rawDist overshoots — place it above PIN_Y (past green).
+  const scale = rawDist > 0 ? rawDist : 150;
+  const distToY = d => PIN_Y + ((scale - d) / scale) * RANGE_Y;
+
+  // Band width spans the FULL fairway (including green), not just open fairway
+  // Use SVG full width minus small margin
+  const BAND_X = 8;
+  const BAND_W = 344;
+
+  // Compute ideal Y for each band (can be anywhere: above green = overshoot, below = short)
+  const idealYs = top3.map(s => distToY(s.dist));
+
+  // Clamp to visible SVG range with padding
+  const PAD = 4;
+  let rYs = idealYs.map(y => Math.max(PAD, Math.min(PLAYER_Y - BAND_H - PAD, y)));
+
+  // Sort by Y to resolve collisions in order (closest to green first)
+  const order = [...rYs.keys()].sort((a,b) => rYs[a] - rYs[b]);
+
+  // Push bands apart downward
+  for(let pass=0;pass<8;pass++){
+    for(let k=1;k<order.length;k++){
+      const a=order[k-1], b=order[k];
+      if(rYs[b] - rYs[a] < BAND_H + 3) rYs[b] = rYs[a] + BAND_H + 3;
+    }
+  }
+  // Clamp from bottom, push upward if needed
+  for(let k=order.length-1;k>=0;k--){
+    const i=order[k];
+    if(rYs[i] > PLAYER_Y - BAND_H - PAD) rYs[i] = PLAYER_Y - BAND_H - PAD;
+    if(k>0){
+      const prev=order[k-1];
+      if(rYs[i]-rYs[prev] < BAND_H+3) rYs[prev] = rYs[i] - BAND_H - 3;
+    }
+  }
+
+  let bands='', labels='';
+
+  top3.forEach((s,i)=>{
+    const c=ZC[i];
+    const yC = rYs[i];
+    const yT = yC - BAND_H/2;
+    const pct = SWING_PCT[s.swingKey]||'100%';
+    const midY = yC.toFixed(1);
+
+    // Connector dot at true landing position if band was displaced
+    const idealY = Math.max(PAD, Math.min(PLAYER_Y-PAD, idealYs[i]));
+    if(Math.abs(yC - idealY) > BAND_H*0.6){
+      const dotX = (BAND_X + BAND_W/2).toFixed(1);
+      bands+=`<circle cx="${dotX}" cy="${idealY.toFixed(1)}" r="4"
+        fill="${c.fill}" opacity="0.8" stroke="${c.stroke}" stroke-width="1"/>
+        <line x1="${dotX}" y1="${(yT + (yC>idealY?0:BAND_H)).toFixed(1)}"
+          x2="${dotX}" y2="${idealY.toFixed(1)}"
+          stroke="${c.stroke}" stroke-width="1" stroke-dasharray="2,3" opacity="0.5"/>`;
+    }
+
+    // Band — full width, 50% opacity so green shows through
+    bands+=`
+      <rect x="${BAND_X}" y="${yT.toFixed(1)}" width="${BAND_W}" height="${BAND_H}"
+        rx="5" fill="${c.fill}" opacity="0.52"/>
+      <rect x="${BAND_X}" y="${yT.toFixed(1)}" width="${BAND_W}" height="${BAND_H}"
+        rx="5" fill="none" stroke="${c.stroke}" stroke-width="1.2" opacity="0.7"/>`;
+
+    // Dynamic font size based on band width and label length
+    const fullLabel = `${s.club}  ${pct} · ${s.dist}y`;
+    const charCount = fullLabel.length;
+    const fs = charCount > 18 ? 9 : charCount > 14 ? 10 : 11;
+
+    // Club name left, swing%·dist right — with enough padding to not collide
+    labels+=`
+      <text x="${(BAND_X+12).toFixed(1)}" y="${midY}"
+        fill="${c.tf}" font-size="${fs}" font-family="DM Sans" font-weight="700"
+        dominant-baseline="middle">${s.club}</text>
+      <text x="${(BAND_X + BAND_W - 12).toFixed(1)}" y="${midY}"
+        fill="${c.tf}" font-size="${fs}" font-family="DM Sans" font-weight="600"
+        text-anchor="end" dominant-baseline="middle">${pct} · ${s.dist}y</text>`;
+  });
+
+  document.getElementById('zone-bands').innerHTML=bands;
+  document.getElementById('zone-labels').innerHTML=labels;
+}
+
+// ── CADDIE CARDS ──
+function renderCaddieCards(adjDist) {
+  const top3=getTop3(adjDist);
+  const wrap=document.getElementById('zone-cards');
+  if(!top3.length){wrap.innerHTML=`<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">Add yardages in My Bag to see caddie recommendations</div>`;return;}
+  const cls=['best','good','ok'];
+  wrap.innerHTML=`<div class="caddie-header">🎙 CADDIE'S CALL</div>`+top3.map((s,i)=>{
+    const delta=s.dist-adjDist,isExact=Math.abs(delta)<=3;
+    const ds=isExact?'✓ Exact':(delta>0?`+${delta}`:`${delta}`)+' yds';
+    return `<div class="caddie-card ${cls[i]}"><div class="caddie-swatch ${cls[i]}"></div>
+      <div class="caddie-info"><div class="caddie-club">${s.club}</div>
+      <div class="caddie-swing ${cls[i]}">${SWING_DESC[s.swingKey]||'Full swing'} (${SWING_PCT[s.swingKey]||'100%'})</div></div>
+      <div class="caddie-dist"><div class="caddie-dist-num">${s.dist}<span style="font-size:11px;color:var(--text3)"> yds</span></div>
+      <div class="caddie-dist-delta ${isExact?'exact':''}">${ds}</div></div></div>`;
+  }).join('');
+}
+
+// ── OPTIONS CARDS ──
+function renderOptionsCards(adjDist) {
+  const top3=getTop3(adjDist);
+  const inner=document.getElementById('options-inner');
+  if(!top3.length){inner.innerHTML=`<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">No matching clubs found. Add yardages in My Bag first.</div>`;return;}
+  const rC=['r1','r2','r3'];
+  inner.innerHTML=top3.map((s,i)=>{
+    const delta=s.dist-adjDist;
+    const ds=delta===0?'Exact match':(delta>0?`Carries ${Math.abs(delta)} yds past`:`${Math.abs(delta)} yds short`);
+    return `<div class="option-card"><div class="option-rank ${rC[i]}">${i+1}</div>
+      <div class="option-info"><div class="option-clubs">${s.club} — ${SWING_PCT[s.swingKey]||'100%'}</div>
+      <div class="option-detail">${ds} · Carries ${s.dist} yds</div></div>
+      <div class="option-dist">${s.dist}y</div></div>`;
+  }).join('');
+}
+
+document.getElementById('course-modal').addEventListener('click',function(e){if(e.target===this)closeCourseModal();});
+
+window.setMapView = function(view) {
+  mapView = view;
+  document.getElementById('toggle-zones').classList.toggle('active', view==='zones');
+  document.getElementById('toggle-options').classList.toggle('active', view==='options');
+  document.getElementById('zone-cards').style.display = view==='zones' ? 'block' : 'none';
+  document.getElementById('options-list').style.display = view==='options' ? 'block' : 'none';
+  recalculate();
+};
+
+window.setWind = function(dir, el) {
+  windDir = dir;
+  document.querySelectorAll('.adj-card')[0].querySelectorAll('.adj-toggle').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  recalculate();
+};
+
+window.setSlope = function(dir, el) {
+  slopeDir = dir;
+  el.parentElement.querySelectorAll('.adj-toggle').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  recalculate();
+};
+
+window.setSlopeDeg = function(deg, el) {
+  slopeDeg = deg;
+  document.querySelectorAll('#slope-deg-mild,#slope-deg-mod,#slope-deg-steep').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  recalculate();
+};
+
+function getAdjustedDist(raw) {
+  let adj = raw;
+  const mph = parseInt(document.getElementById('wind-mph')?.value) || 0;
+  if (windDir === 'head') adj += mph * 1.0;
+  else if (windDir === 'tail') adj -= mph * 0.8;
+  else if (windDir === 'cross') adj += mph * 0.4;
+  const slopePct = slopeDeg === 'mild' ? 0.05 : slopeDeg === 'mod' ? 0.10 : 0.17;
+  if (slopeDir === 'up') adj *= (1 + slopePct);
+  else if (slopeDir === 'down') adj *= (1 - slopePct * 0.8);
+  return Math.round(adj / 5) * 5;
+}
+
+window.onSliderInput = function(val) {
+  rawDist = parseInt(val);
+  document.getElementById('laser-input').value = '';
+  recalculate();
+};
+
+window.onLaserInput = function(val) {
+  const v = parseInt(val);
+  if (v >= 50 && v <= 350) {
+    rawDist = Math.round(v / 5) * 5;
+    document.getElementById('dist-slider').value = rawDist;
+    recalculate();
+  }
+};
+
+// duplicate block removed — canonical versions above
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+function showToast(msg, duration=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+window.showToast = showToast;
+
+// ══════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════
+// Load local yardages on boot
+const stored = localStorage.getItem('bb_yardages');
+if (stored) yardages = JSON.parse(stored);
+
+// Set time of day immediately
+const h = new Date().getHours();
+const tod = document.getElementById('time-of-day');
+if (tod) tod.textContent = h < 12 ? 'MORNING' : h < 17 ? 'AFTERNOON' : 'EVENING';
+</script>
+</body>
+</html>
